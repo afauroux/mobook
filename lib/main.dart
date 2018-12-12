@@ -6,14 +6,28 @@ import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:yaml/yaml.dart';
 import 'dart:collection';
+import 'package:html/parser.dart' as parser;
+import 'package:html/dom.dart' as dom;
 
 Future<String> loadBibli() async {
   return await rootBundle.loadString('scripts/bibli.yaml');
 }
 
+Future<String> loadPages() async {
+  return await rootBundle.loadString('scripts/bibli.html');
+}
+
 void speak(String msg) async {
   print(msg);
   tts.Tts.speak(msg);
+}
+
+void sayTime() async {
+  var n = DateTime.now();
+
+  String time =
+      'Il est ${n.hour} heures et ${n.minute} minutes; et nous sommes le ${n.day}, ${n.month}, ${n.year}';
+  speak(time);
 }
 
 void main() => runApp(MyApp());
@@ -27,7 +41,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Menu Principal'),
+      home: Scaffold(body: MyHomePage(title: 'Menu Principal')),
     );
   }
 }
@@ -58,14 +72,6 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       navigator.next();
     });
-  }
-
-  void sayTime() async {
-    var n = DateTime.now();
-
-    String time =
-        'Il est ${n.hour} heures et ${n.minute} minutes; et nous sommes le ${n.day}, ${n.month}, ${n.year}';
-    speak(time);
   }
 
   void _returnPressed() {
@@ -166,7 +172,7 @@ class Navigator {
   dynamic setOption; //option state setter
   dynamic setCurrent; //option state setter
 
-  Navigator(dynamic setOption, dynamic setCurrent) {
+  Navigator(this.setOption, this.setCurrent) {
     _loadBibli();
   }
 
@@ -191,9 +197,31 @@ class Navigator {
     return _current < _options.length ? _options[_current] : "aucune options";
   }
 
-  void go() {
+  void go() async {
     //go to the current option
+
+    String page = await loadPages();
+    dom.Document doc = parser.parse(page);
+    List<dom.Element> elem = doc.getElementsByClassName('entrybody2');
+    List<dom.Element> links = elem.first.querySelectorAll('a');
+    var i = 0;
+    String bookpage;
+    String title;
+    //print(links);
+    for (dom.Element l in links) {
+      var att = l.attributes;
+      bookpage = att['href'];
+      title = att['title'];
+      print(l.attributes);
+      print(bookpage);
+      print(title);
+      i++;
+      if (i > 30) {
+        break;
+      }
+    }
   }
+
   void back() {
     //comme back one step
   }

@@ -27,8 +27,7 @@ def is_good_response(resp):
     Returns True if the response seems to be HTML, False otherwise.
     """
     content_type = resp.headers['Content-Type'].lower()
-    return (resp.status_code == 200
-            and content_type is not None
+    return (resp.status_code == 200 and content_type is not None
             and content_type.find('html') > -1)
 
 
@@ -42,7 +41,9 @@ def log_error(e):
 
 
 pages = [
-    f'http://www.litteratureaudio.com/notre-bibliotheque-de-livres-audio-gratuits?pg={i}' for i in range(1, 21)]
+    f'http://www.litteratureaudio.com/notre-bibliotheque-de-livres-audio-gratuits?pg={i}'
+    for i in range(1, 21)
+]
 
 raw_html = simple_get(pages[0])
 html = BeautifulSoup(raw_html, 'html.parser')
@@ -58,8 +59,8 @@ def main():
 
         booklist = li.find('ul')
         category = booklist.previousSibling.text
-        category = category if 'Catégorie' not in category else category.split(':')[
-            1].strip()
+        category = category if 'Catégorie' not in category else category.split(
+            ':')[1].strip()
         print(category)
         bibli[category] = []
         c = 0
@@ -73,10 +74,15 @@ def main():
                 bookpage = BeautifulSoup(
                     simple_get(link['href']), 'html.parser')
                 files = bookpage.find_all(
-                    "a", class_="link-mp3-file") + bookpage.find_all("a", class_="link-roman-mp3-file")
+                    "a", class_="link-mp3-file") + bookpage.find_all(
+                        "a", class_="link-roman-mp3-file")
                 files = [f['href'] for f in files]
-                bibli[category].append(
-                    {"author": author, "title": title, "audiofile": files})
+                bibli[category].append({
+                    "author": author,
+                    "title": title,
+                    "audiofile": files
+                })
                 c += 1
             if c > 10:
                 break
+    return bibli

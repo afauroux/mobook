@@ -16,6 +16,8 @@ dependencies:
   tts: ^1.0.2
   intl: ^0.15.7
   yaml: ^2.1.15
+  html: ^0.13.3+3
+
   flutter:
     sdk: flutter
 
@@ -43,6 +45,7 @@ flutter:
   #  - images/a_dot_ham.jpeg
   assets:
     - scripts/bibli.yaml
+    - scripts/bibli.html
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see

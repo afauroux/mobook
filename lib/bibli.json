@@ -1,4 +1,12 @@
 {
-    "url": "http://www.litteratureaudio.com/notre-bibliotheque-de-livres-audio-gratuits",
-    "categories":
+  "les plus appréciés": {
+    "url": "http://www.litteratureaudio.com/classement-de-nos-livres-audio-gratuits-les-plus-apprecies"
+    "surtag":"div.entrybody2"
+  },
+  "par catégories",
+  "par auteur",
+  "par lecteur",
+  "par pays",
+  "par périodes",
+
 }
