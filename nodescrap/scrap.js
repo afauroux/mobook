@@ -11,12 +11,12 @@ async function getBook(title, href) {
   var html = await rp(href);
   var mp3 = [];
   try {
-    mp3.push(...$(".link-roman-mp3-file", html));
+    mp3.push($(".link-roman-mp3-file", html));
   } catch (err) {
     console.log("err :", err);
   }
   try {
-    mp3.push(...$(".link-mp3-file", html));
+    mp3.push($(".link-mp3-file", html));
   } catch (err) {
     console.log("err :", err);
   }
@@ -36,7 +36,7 @@ async function scrapBibliPage(page) {
 
     for (var i in booklist) {
       try {
-        console.log((booklist[i].attribs.title, booklist[i].attribs.href);
+        console.log(booklist[i].attribs.title, booklist[i].attribs.href);
         books.push(
           getBook(booklist[i].attribs.title, booklist[i].attribs.href)
         );
@@ -51,14 +51,12 @@ async function scrapBibliPage(page) {
 async function main() {
   var books = [];
   for (var i in pages) {
-    books.push(...scrapBibliPage(pages[i]));
+    books.push(scrapBibliPage(pages[i]));
   }
   var books = await Promise.all(books);
   return books;
 }
-main()
-  .then(books => console.log("books :", books))
-  .catch(err => console.log("err :", err));
+main().then(books => console.log("books :", books));
 
 async function main2() {
   var categ = [];
